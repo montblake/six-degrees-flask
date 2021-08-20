@@ -1,5 +1,5 @@
 from app import app
-from flask import render_template, request, redirect
+from flask import render_template
 import requests
 
 IMDB_KEY = app.config['IMDB_KEY']
@@ -62,7 +62,6 @@ def search(actor):
             film_slim["image_url"] = film["image"]["url"]
         actor_info["filmography"].append(film_slim)
 
-    # return render_template('index.html', actor_info=actor_info)
     return actor_info
 
 @app.route('/getcast/<movie_id>')

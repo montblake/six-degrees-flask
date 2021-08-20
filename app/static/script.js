@@ -1,3 +1,8 @@
+// URL BASE SETTINGS for DEV and PROD
+//const URL_BASE = "http://localhost:5000/"
+const URL_BASE = "https://six-degrees-flask.herokuapp.com/"
+
+
 // Create an ACTOR OBJECT to capture all relevant data
 let actorObject = [
     {
@@ -265,7 +270,7 @@ function handleConfirm(event){
         filmObject.year = film.year;
         filmObject.id = film.id.split('/')[2];
         filmObject.image = film.image_url
-        $.ajax({url: `http://localhost:5000/getcast/${filmObject.id}`})
+        $.ajax({url: `${URL_BASE}getcast/${filmObject.id}`})
         .then(response => {
             filmObject.cast = response["Actors"];
             filmObject.cast = filmObject.cast.split(', ')
@@ -308,7 +313,7 @@ function handleInput(event) {
 // either add search term to address bar or include in body
 // search route should not render anything, simply return json
 function search(normalizedInput){
-    $.ajax({url: `http://localhost:5000/search/${normalizedInput}`})
+    $.ajax({url: `${URL_BASE}search/${normalizedInput}`})
     .then(response => {
         setActorInfo(response);
         let $pic = $(`#actor-img${actorIndex}`);
