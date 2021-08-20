@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename="styles.css") }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.png') }}"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>  
+    <script defer src="{{ url_for('static', filename='script.js') }}"></script>
+    <title>Six Degrees of Kevin Bacon</title>
+</head>
+
+<body>
+    <header>
+        <h1>Six Degrees of Kevin Bacon</h1>
+        <button class="reset-btn-hdr">Replace Kevin?</button>
+        <button class="reset-btn-hdr">Change Color</button>
+        <div id="reset-btn-hdr" >
+            <button class="reset-btn-hdr">Undo Choice</button>
+            <button class="reset-btn-hdr">Reset Screen</button>
+        </div>
+        
+    </header>
+    <section id="image-strip">
+        <div id="orange-strip"></div>
+        <div id="orange-back"></div>
+        <div id="orange-stripe"></div>
+        <div id="images">
+            <div class="card" id="actor-card0">
+                <div class="frame">
+                    <p class="mystery">?</p>
+                    <img id="actor-img0" src="" alt="">
+                </div>
+                <h3></h3>
+            </div>
+            <div class="number" id="num-one">
+                <p>1</p>
+            </div>
+            <div class="card" id="actor-card1">
+                <div class="frame">
+                    <p class="mystery">?</p>
+                    <img id="actor-img1" src="" alt="">
+                </div>
+                <h3></h3>
+            </div>
+            <div class="number" id="num-two">
+                <p>2</p>
+            </div>
+            <div class="card" id="actor-card2">
+                <div class="frame">
+                    <p class="mystery">?</p>
+                    <img id="actor-img2" src="" alt="">
+                </div>
+                <h3></h3>
+            </div>
+            <div class="number" id="num-three">
+                <p>3</p>
+            </div>
+            <div class="card" id="actor-card3">
+                <div class="frame">
+                    <p class="mystery">?</p>
+                    <img id="actor-img3" src="" alt="">
+                </div>
+                <h3></h3>
+            </div>
+            <div class="number" id="num-four">
+                <p>4</p>
+            </div>
+            <div class="card" id="actor-card4">
+                <div class="frame">
+                    <p class="mystery">?</p>
+                    <img id="actor-img4" src="" alt="">
+                </div>
+                <h3></h3>
+            </div>
+            <div class="number" id="num-five">
+                <p>5</p>
+            </div>
+            <div class="card" id="actor-card5">
+                <div class="frame">
+                    <p class="mystery">?</p>
+                    <img id="actor-img5" src="" alt="">
+                </div>
+                <h3></h3>
+            </div>
+            <div class="number" id="num-six">
+                <p>6</p>
+            </div>
+        </div>
+    </section>
+    <section id="filmography">
+
+    </section>
+
+    <section id="bacon">
+        <div id="featured-text">
+            <div id="initial-instructions">
+                <h2 class="orange">Feeling Footloose?</h2>
+                <ol>
+                    <li>Pick an actor to view their filmography</li>
+                    <li>Search their films to see who they've worked with.</li>
+                    <li>Choose another actor by clicking in the cast lists.</li>
+                    <li>Explore <span>that</span> actor's films and who <span>they</span> have worked with.</li>
+                    <li>Connect to Kevin Bacon within six choices.</li>
+                    <li>Impress your friends and family.</li>
+                </ol>
+            </div>
+            <form id="user-input">
+                <input type="text" value="" placeholder="Enter an actor's name to get started" id="input-fld">
+                <input type="submit" value="submit" id="input-btn">
+            </form>
+
+            <div id="degree-progress">
+                <h2 class="orange">Track your progress</h2>
+                <ol></ol>
+            </div>
+            <div id="confirmation-form">
+                <h2 class="orange">Please confirm your choice</h2>
+                <form>
+                    <p>We believe we have displayed the information you requested.</p>
+                    <p>Is this the actor you were searching for?</p>
+                    <input type="submit" value="confirm" id="confirmation-btn">
+                    <input type="submit" value="reset" id="reset-btn-body">
+                </form>
+            </div>
+            <div id="error">
+                <h2 class="orange">Error Message</h2>
+                <p>Sorry, we are unable to complete your request. Please try again.</p>
+            </div>
+
+
+        </div>
+
+    </section>
+    <footer>
+        <p>Copyright © Blake Montgomery 2021. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
