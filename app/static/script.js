@@ -1,6 +1,6 @@
 // URL BASE SETTINGS for DEV and PROD
-//const URL_BASE = "http://localhost:5000/"
-const URL_BASE = "https://six-degrees-flask.herokuapp.com/"
+const URL_BASE = "http://localhost:5000/"
+// const URL_BASE = "https://six-degrees-flask.herokuapp.com/"
 
 
 // Create an ACTOR OBJECT to capture all relevant data
@@ -98,8 +98,29 @@ const $num6 = $('#num-six');
 const $progress = $('#degree-progress');
 const $progressOl = $('#degree-progress ol');
 
+const $endpoint1 = $('#endpoint1');
+const $endpoint2 = $('#endpoint2');
+const $endpoint3 = $('#endpoint3');
+const $bgImage = $('body')
+
 
 // FUNCTIONS
+function changeEndpoint(actor){
+    $.ajax({url: `${URL_BASE}search/${actor}`})
+    .then(response => {
+        $endpoint1.text(response.name);
+        $endpoint2.text(response.name);
+        $endpoint3.text(response.name.split(' ')[0]);
+        $bgImage.css("background-image", `url(${response.image_url})`);  
+    })
+}
+
+function changeColorScheme(color){
+    document.body.style.setProperty('--accent-color', color);
+}
+
+
+
 function getActorId(settings) {
     settings => $.ajax(settings);
 }

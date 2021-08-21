@@ -4,6 +4,7 @@
 
 :root {
     font-size: 10px;
+    --accent-color: orange;  
 }
 
 * {
@@ -12,7 +13,6 @@
     box-sizing: border-box;
 }
 
-
 /* APP STRUCTURE */
 body {
     font-family: 'Rubik', sans-serif;
@@ -20,7 +20,7 @@ body {
     height: 100vh;
     width: 100vw;
     background-color: black;
-    background-image: url('./bacon_img.jpeg');
+    background-image: url(./bacon_img.jpeg);
     background-repeat: no-repeat;
     background-position: right 200px;
     background-size: cover;
@@ -104,14 +104,14 @@ h5 {
 
 /* STYLE CLASSES */
 .orange {
-    color: orange;
+    color: var(--accent-color);
 }
 
 /* DOCUMENT SECTIONS */
 /* HEADER */
 .reset-btn-hdr {
     padding: 10px;
-    background-color: orange;
+    background-color: var(--accent-color);
     border: none;
     border-radius: 12px;
     font-weight: 800;
@@ -140,7 +140,7 @@ h5 {
     top: 50%;
     transform: translateY(-50%);
     z-index: -10;
-    background: orange;
+    background: var(--accent-color);
 }
 #orange-strip {
     display: none;
@@ -150,7 +150,7 @@ h5 {
     top: 0%;
     transform: translateY(-50%);
     z-index: -10;
-    background: orange;
+    background: var(--accent-color);
 }
 
 #orange-stripe {
@@ -161,7 +161,7 @@ h5 {
     top: 33%;
     transform: translateY(-50%);
     z-index: -10;
-    background: orange;
+    background: var(--accent-color);
 }
 
 #images {
@@ -204,7 +204,7 @@ h5 {
     align-items: center;
     font-size: 1.6rem;
     font-weight: 800;
-    color: orange;
+    color: var(--accent-color);
     margin: 0 5px 0 5px;
     transition: height 1s, width 1s, font-size 1s;
 }
@@ -228,7 +228,7 @@ h5 {
 }
 
 .film-card {
-    background: orange;
+    background: var(--accent-color);
     width: 200px;
     scroll-snap-align: center;
     color: black;
@@ -300,7 +300,7 @@ h5 {
 }
 
 #initial-instructions li::marker {
-    color: orange;
+    color: var(--accent-color);
 }
 
 #initial-instructions span {
@@ -322,13 +322,13 @@ h5 {
 
 #input-fld:focus {
     outline: none;
-    box-shadow: inset 0px 0px 5px 3px orange;
+    box-shadow: inset 0px 0px 5px 3px var(--accent-color);
 }
 
 #input-btn {
     width: 100px;
     padding: 20px;
-    background: orange;
+    background: var(--accent-color);
     border: none;
     margin-left: 10px;
     border-radius: 12px;
@@ -359,7 +359,7 @@ h5 {
 
 #confirmation-btn {
     padding: 10px;
-    background: orange;
+    background: var(--accent-color);
     border: none;
     border-radius: 12px;
     font-weight: 800;
@@ -380,7 +380,7 @@ h5 {
 
 #reset-btn-body {
     padding: 10px;
-    background: orange;
+    background: var(--accent-color);
     border: none;
     border-radius: 12px;
     font-weight: 800;
@@ -430,8 +430,11 @@ h5 {
 
 footer {
     position: absolute;
-    bottom: 20px;
-    left: 40px;
+    bottom: 0; left: 0;
+    padding: 15px 40px;
+    background: black;
+    width: 100%;
+    height: 40px;
 }
 
 @media only screen and (max-width: 1000px) {

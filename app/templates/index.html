@@ -10,13 +10,13 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>  
     <script defer src="{{ url_for('static', filename='script.js') }}"></script>
-    <title>Six Degrees of Kevin Bacon</title>
+    <title>Six Degrees</title>
 </head>
 
-<body>
+<body id="background-image">
     <header>
-        <h1>Six Degrees of Kevin Bacon</h1>
-        <button class="reset-btn-hdr">Replace Kevin?</button>
+        <h1>Six Degrees of <span id="endpoint1">Kevin Bacon</span></h1>
+        <button class="reset-btn-hdr">Replace <span id="endpoint3">Kevin</span></button>
         <button class="reset-btn-hdr">Change Color</button>
         <div id="reset-btn-hdr" >
             <button class="reset-btn-hdr">Undo Choice</button>
@@ -104,7 +104,7 @@
                     <li>Search their films to see who they've worked with.</li>
                     <li>Choose another actor by clicking in the cast lists.</li>
                     <li>Explore <span>that</span> actor's films and who <span>they</span> have worked with.</li>
-                    <li>Connect to Kevin Bacon within six choices.</li>
+                    <li>Connect to <span id="endpoint2">Kevin Bacon</span> within six choices.</li>
                     <li>Impress your friends and family.</li>
                 </ol>
             </div>
