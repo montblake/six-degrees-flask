@@ -1,4 +1,5 @@
 from app import db
+from datetime import datetime
 
 
 actor_film = db.Table('actor_film',
@@ -9,6 +10,9 @@ actor_film = db.Table('actor_film',
 class Actor(db.Model):
     id = db.Column(db.String(16), primary_key=True)
     name = db.Column(db.String(120), index=True, unique=True)
+    image_url = db.Column(db.String(128))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
     films = db.relationship(
         'Film', secondary=actor_film,
         backref=db.backref('cast', lazy='joined'), lazy='joined')
@@ -20,6 +24,10 @@ class Actor(db.Model):
 class Film(db.Model):
     id = db.Column(db.String(16), primary_key=True)
     title = db.Column(db.String(120), index=True)
+    year = db.Column(db.Integer)
+    image_url = db.Column(db.String(128))
+    featured_cast = db.Column(db.String(128))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     
     def __repr__(self):
         return '<Film {}>'.format(self.title)

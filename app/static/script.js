@@ -8,51 +8,45 @@ let actorObject = [
     {
         name: "",
         image: "",
-        imdbId: "",
-        films: [],
-        filmObjectArray: [],
+        id: "",
+        filmography: [],
     },
     {
         name: "",
         image: "",
-        imdbId: "",
-        films: [],
-        filmObjectArray: [],
+        id: "",
+        filmography: [],
     },
     {
         name: "",
         image: "",
-        imdbId: "",
-        films: [],
-        filmObjectArray: [],
+        id: "",
+        filmography: [],
     },
     {
         name: "",
         image: "",
-        imdbId: "",
-        films: [],
-        filmObjectArray: [],
+        id: "",
+        filmography: [],
+
     },
     {
         name: "",
         image: "",
-        imdbId: "",
-        films: [],
-        filmObjectArray: [],
+        id: "",
+        filmography: [],
     },
     {
         name: "",
         image: "",
-        imdbId: "",
-        films: [],
-        filmObjectArray: [],
+        id: "",
+        filmography: [],
     },
     {
         name: "",
         image: "",
-        imdbId: "",
-        films: [],
-        filmObjectArray: [],
+        id: "",
+        filmography: [],
     },
 ];
 
@@ -131,44 +125,38 @@ function resetActorObject() {
         {
             name: "",
             image: "",
-            imdbId: "",
-            films: [],
-            filmObjectArray: [],
+            id: "",
+            filmography: [],
         },
         {
             name: "",
             image: "",
-            imdbId: "",
-            films: [],
-            filmObjectArray: [],
+            id: "",
+            filmography: [],
         },
         {
             name: "",
             image: "",
-            imdbId: "",
-            films: [],
-            filmObjectArray: [],
+            id: "",
+            filmography: [],
         },
         {
             name: "",
             image: "",
-            imdbId: "",
-            films: [],
-            filmObjectArray: [],
+            id: "",
+            filmography: [],
         },
         {
             name: "",
             image: "",
-            imdbId: "",
-            films: [],
-            filmObjectArray: [],
+            id: "",
+            filmography: [],
         },
         {
             name: "",
             image: "",
-            imdbId: "",
-            films: [],
-            filmObjectArray: [],
+            id: "",
+            filmography: [],
         },
     ];
 }
@@ -177,8 +165,8 @@ function resetActorObject() {
 function setActorInfo(response) {
     actorObject[actorIndex].image = response.image_url;
     actorObject[actorIndex].name = response.name;
-    actorObject[actorIndex].films = response.filmography;
-    actorObject[actorIndex].imdbId = response.id;
+    actorObject[actorIndex].filmography = response.filmography;
+    actorObject[actorIndex].id = response.id;
 }
 
 
@@ -272,6 +260,15 @@ function handleReset(){
     location.reload(true);
 }
 
+function getCast(film){
+    $.ajax({url: `${URL_BASE}getcast/${film.id}`})
+    .then(response => {
+        film.featured_cast = response.split(', ');
+        renderFilm(film);
+    });
+}
+
+
 // Confirms Name and Image refer to intended actor
 // also, takes this moment to cut down initial list of films to selected ones
 function handleConfirm(event){
@@ -284,31 +281,20 @@ function handleConfirm(event){
     changeNumberDisplay();
     displayProgress();
 
-    actorObject[actorIndex].films.forEach(function(film) {
-        let filmObject = {};
-        
-        filmObject.title = film.title;
-        filmObject.year = film.year;
-        filmObject.id = film.id.split('/')[2];
-        filmObject.image = film.image_url
-        $.ajax({url: `${URL_BASE}getcast/${filmObject.id}`})
-        .then(response => {
-            filmObject.cast = response["Actors"];
-            filmObject.cast = filmObject.cast.split(', ')
-            actorObject[actorIndex].filmObjectArray.push(filmObject);
-            renderFilm(filmObject);
-        });
+    actorObject[actorIndex].filmography.forEach(film => {
+        getCast(film);
     });
-    $filmHdr.text(`The Films of ${actorObject[actorIndex].name} (${actorObject[actorIndex].films.length})`);
+        
+    $filmHdr.text(`The Films of ${actorObject[actorIndex].name} (${actorObject[actorIndex].filmography.length})`);
     $filmography.append($filmStrip);
     $filmography.append($filmHdr);
     $filmography.show(1000);  
-    actorIndex++;
-}
+};
 
 
 // Initiates Search Process from Clicking in Cast List
 function handleChoice(){
+    actorIndex++;
     let $actorLink = $(this);
     updateProgress($actorLink);
     // Update Progress
@@ -334,7 +320,7 @@ function handleInput(event) {
 // either add search term to address bar or include in body
 // search route should not render anything, simply return json
 function search(normalizedInput){
-    $.ajax({url: `${URL_BASE}search/${normalizedInput}`})
+    $.ajax({url: `${URL_BASE}getactor/${normalizedInput}`})
     .then(response => {
         setActorInfo(response);
         let $pic = $(`#actor-img${actorIndex}`);
@@ -350,18 +336,18 @@ function search(normalizedInput){
 
 
 //  RENDER FILM CARDS TO FILMOGRAPHY SECTION
-function renderFilm(filmObject){
+function renderFilm(film){
     let $filmCastUl = $('<ul></ul>');
-    filmObject.cast.forEach(function(member) {
+    film.featured_cast.forEach(function(member) {
         let $castLi = $(`<li>${member}</li>`);
         $filmCastUl.append($castLi);
     });
     
     let $textCtr = $(`<div class="text-ctr">
-                            <h4>${filmObject.title}</h4>
-                            <h5>${filmObject.year}</h5>
+                            <h4>${film.title}</h4>
+                            <h5>${film.year}</h5>
                             <div class="movie-pic-frame">
-                                <img class="movie-pic" src="${filmObject.image}"/>
+                                <img class="movie-pic" src="${film.image_url}"/>
                             </div>
                         </div>`);
     $textCtr.append($filmCastUl);
