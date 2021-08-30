@@ -1,6 +1,6 @@
 // URL BASE SETTINGS for DEV and PROD
-// const URL_BASE = "http://localhost:5000/"
-const URL_BASE = "https://six-degrees-flask.herokuapp.com/"
+const URL_BASE = "http://localhost:5000/"
+// const URL_BASE = "https://six-degrees-flask.herokuapp.com/"
 
 
 // Create an ACTOR OBJECT to capture all relevant data
