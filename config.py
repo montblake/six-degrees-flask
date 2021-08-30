@@ -8,6 +8,7 @@ class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY')
     IMDB_KEY = os.environ.get('IMDB_KEY')
     OMDB_KEY = os.environ.get('OMDB_KEY')
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', '').replace(
+        'postgres://', 'postgresql://') or \
         'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False

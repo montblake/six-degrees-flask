@@ -1,1 +1,1 @@
-web: gunicorn sixdegrees:app
+web: flask db upgrade; gunicorn sixdegrees:app
