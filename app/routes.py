@@ -265,6 +265,7 @@ def get_featured_cast(movie_id):
     api_url = "https://www.omdbapi.com/?apikey=" + OMDB_KEY + "&i=" + movie_id
     response = requests.get(api_url)
     response = response.json()
+    print(response)
     featured_cast = response["Actors"]
     return featured_cast
 
