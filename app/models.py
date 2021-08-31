@@ -10,7 +10,7 @@ actor_film = db.Table('actor_film',
 class Actor(db.Model):
     id = db.Column(db.String(16), primary_key=True)
     name = db.Column(db.String(120), index=True, unique=True)
-    image_url = db.Column(db.String(128))
+    image_url = db.Column(db.String(255))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
     films = db.relationship(
@@ -25,8 +25,8 @@ class Film(db.Model):
     id = db.Column(db.String(16), primary_key=True)
     title = db.Column(db.String(120), index=True)
     year = db.Column(db.Integer)
-    image_url = db.Column(db.String(128))
-    featured_cast = db.Column(db.String(128))
+    image_url = db.Column(db.String(255))
+    featured_cast = db.Column(db.String(255))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     
     def __repr__(self):
