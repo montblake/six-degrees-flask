@@ -9,6 +9,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.png') }}"/>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>  
+        <script src="https://kit.fontawesome.com/b54edfb646.js" crossorigin="anonymous"></script>
     <script defer src="{{ url_for('static', filename='script.js') }}"></script>
     <title>Six Degrees</title>
 </head>
@@ -16,16 +17,46 @@
 <body id="background-image">
     <header>
         <h1>Six Degrees</h1>
-        <h2>Amaze your friends and family</h2>
-        <h3>With Useless Movie Knowledge</h3>
-        <h2>or just pass the time...</h2>
+        <h2>of <span id="endpoint">Kevin Bacon</span></h2>
+        <nav>
+            <div>The Game</div>
+            <div>The Project</div>
+            <div>Technologies Used</div>
+            <div>Links</div></p>
+        </nav>
     </header>
     <main>
-        <a href="https://six-degrees-flask-react.herokuapp.com/">Play</a>
+        <p class="narrow">In the Eighties, he was a heart-throb. In the Nineties, he was a staple(?). By the aughts(?) he was the subject a drinking game. Or, if you prefer your games more genteel, a "parlor" game. </p>
+        <p class="narrow">Six Degrees of Kevin Bacon was a play on the concept of six degrees of separation. Any two people in the world could be linked by six personal connections... or something like that. </p>
+        <p class="narrow">The game is to begin with some actor, any actor (or actress) and try to link them, through films they have worked on, with Kevin Bacon within six degrees of separation.</p>
+        <p class="narrow">If we start with Brad Pitt. And Brad Pitt had worked with Kevin Bacon on some film. That's one degree of separation. And if you make that link, you win. It is that easy! '</p>
+        <p class="narrow">But if Brad hadn't worked with Kevin but he HAD worked with Morgan Freeman who HAD worked with Kevin. That's two degrees of separation. And, if you make that link, within six degrees...
+        then you win.
+        </p>
+        <div class="button-grp">
+            <a class="button" href="https://six-degrees-flask-react.herokuapp.com/">Play The Game</a>
+            <a class="button" href="https://six-degrees-flask-react.github.com/">React Frontend GitHub</a>
+            <a class="button" href="https://six-degrees-flask.github.com/">Flask Backend GitHub</a>
+        </div>
+        
     </main>
 
     <footer>
-
+        <div class="credits">
+            <hgroup>
+                <h3>Blake Montgomery</h3>
+                <h5>Software Engineer</h5>
+            </hgroup>
+            
+            <p>Recent bootcamp graduate. Proud to have gotten my start coding  with the Stanford/Code in Place educational  experiment. Also proud to have worked as a volunteer Section Leader for Code in Place 2021. Previously, theater director.</p>  
+        </div>
+        
+        <div class="links">
+            <i class="fab fa-linkedin-in"></i>
+            <i class="fab fa-github"></i>
+            <i class="fas fa-envelope"></i>                
+        </div>
+         
     </footer>
 </body>
 
