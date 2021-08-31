@@ -25,3 +25,7 @@ htmlcov/
 .coverage
 .coverage.*
 *,cover
+
+
+app/seed1.py
+app/seed_code.py
