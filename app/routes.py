@@ -69,7 +69,7 @@ def create_new_actor(actor_name):
         
         print("first search returned actor id: ", actor_id, name)
 
-        new_actor = Actor(name=name, id=actor_id)
+        new_actor = Actor(id=actor_id)
         db.session.add(new_actor)
         db.session.commit()
         
