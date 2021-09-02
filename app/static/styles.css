@@ -5,7 +5,7 @@
 :root {
     font-size: 10px;
     --accent-color: orange;  
-    --white-shade: whitesmoke; 
+    --white-shade: #ddd; 
 }
 
 * {
@@ -60,7 +60,8 @@ footer {
     padding: 30px 80px 40px 80px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
+    border-top: 1px solid var(--accent-color);
 }
 
 /* TYPOGRAPHY */
@@ -84,7 +85,7 @@ h4 {
 h5 {
     font-size: .8rem;
     margin-top: 2px;
-    color: white;
+    color: var(--white-shade);
 }
 
  footer p {
@@ -95,35 +96,27 @@ h5 {
      background: var(--accent-color);
      padding: 8px 24px;
      border-radius: 8px;
-     color: white;
+     color: #000;
      text-transform: uppercase;
      text-decoration: none;
- }
-
- .credits {
-     color: orange;
-     font-size: 1.5rem;
-     display: flex;
-     justify-content: flex-start;
-     align-items: flex-end;
-     width: 66%;
-
-     
- }
-
-  .credits > p {
-     color: #666;
-     width: 66%;
-     margin-left: 20px;
+     margin: 0 28px;
  }
 
  nav {
      color: orange;
+     margin-top: 12px;
+ }
+
+ .btn {
+    padding: 0 0 0 4px;
+    margin: 0 0 0 -4px;
  }
 
  .narrow {
      width: 33%;
      font-size: 1.2rem;
+     color: var(--white-shade);
+     margin-bottom: 1.2rem;
  }
 
  .button-grp {
@@ -131,17 +124,59 @@ h5 {
      flex-direction: column;
      width: 180px;
      text-align: center;
+     margin-top: 24px;
  }
 
  .button {
-     margin: 4px 0;
+     margin: 6px 0;
  }
 
  .links {
-    width: 100%;
+    width: 33%;
     text-align: center;
     font-size: 3.6rem;
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
+    color:var(--white-shade);
  }
+
+ /* FOOTER -- LINKS */
+.links {
+    color: var(--white-shade);
+    display: flex;
+    justify-content: flex-end;
+    font-size: 3.2rem;
+}
+
+.links > a > i {
+    margin-left: 1rem;
+    color: var(--white-shade);
+}
+
+.links > a > i:hover {
+    color: var(--accent-color);
+}
+
+.links > a > i:active {
+    text-decoration: underline;
+}
+
+/* FOOTER -- CREDITS */
+.credits {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    font-size: 1.8rem;
+    color: var(--white-shade);
+}
+
+.credits > p {
+    font-size: 1rem;
+    color: var(--white-shade);
+    margin: 0 .4rem;
+    text-transform: uppercase;
+}
+
+
+}

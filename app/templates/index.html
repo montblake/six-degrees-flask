@@ -19,44 +19,64 @@
         <h1>Six Degrees</h1>
         <h2>of <span id="endpoint">Kevin Bacon</span></h2>
         <nav>
-            <div>The Game</div>
-            <div>The Project</div>
-            <div>Technologies Used</div>
-            <div>Links</div></p>
+            <div id="btn-game" class="btn">The Game</div>
+            <div id="btn-project" class="btn">The Project</div>
+            <div id="btn-tech" class="btn">Technologies</div>
         </nav>
     </header>
     <main>
-        <p class="narrow">In the Eighties, he was a heart-throb. In the Nineties, he was a staple(?). By the aughts(?) he was the subject a drinking game. Or, if you prefer your games more genteel, a "parlor" game. </p>
-        <p class="narrow">Six Degrees of Kevin Bacon was a play on the concept of six degrees of separation. Any two people in the world could be linked by six personal connections... or something like that. </p>
-        <p class="narrow">The game is to begin with some actor, any actor (or actress) and try to link them, through films they have worked on, with Kevin Bacon within six degrees of separation.</p>
-        <p class="narrow">If we start with Brad Pitt. And Brad Pitt had worked with Kevin Bacon on some film. That's one degree of separation. And if you make that link, you win. It is that easy! '</p>
-        <p class="narrow">But if Brad hadn't worked with Kevin but he HAD worked with Morgan Freeman who HAD worked with Kevin. That's two degrees of separation. And, if you make that link, within six degrees...
-        then you win.
-        </p>
+        <section id="the-game">
+            <p class="narrow">In the Eighties, he was a heart-throb. In the Nineties, a superstar. By the aughts... he was the subject of a drinking game.</p>
+            <p class="narrow">Six Degrees of Kevin Bacon was a play on the concept that any two people in the world could be linked by six personal connections or fewer. Or something like that. </p>
+            <p class="narrow">The game begins with some actor, any actor or actress. The challenge is to link them — through films they have worked on and actors with whom they have worked — with Kevin Bacon.</p>
+            <p class="narrow">If we start with Brad Pitt. And Brad Pitt had worked with Kevin Bacon on some film. There would be one degree of separation between them. Easy, right?</p>
+            <p class="narrow">But if Brad hadn't worked with Kevin but he HAD worked with Morgan Freeman who HAD worked with Kevin. That's two degrees of separation.</p>
+        </section>
+        <section id="the-project">
+            <p class="narrow">This project originated as a means to feature data gathered from a third-party api.</p>
+
+            <p class="narrow">The actor info is easy enough to aquire, even if it takes two searches to get all the data we need. But each actor returns sometimes a few hundred results or more for their film output.</p>
+
+            <p class="narrow">So the backend must filter those lists down to a list that balances completeness with the need for only truly legit movies. However, even this edited list, is rather large to search for every single actor.</p>
+
+            <p class="narrow">I thought this iteration needed to focus three main goals: first to "gamefy" the data-centric app. This element has always been there but I wanted to spend time thinking through and building out further game features.</p>
+            <p class="narrow">Secondly, I hoped to integrate a database into the search routine so that over time we might be able to relieve the reliance on api calls.</p>
+            <p class="narrow">The last task was transitioning the app from an old-school jQuery tech stack to a modern, React frontend. Technology aside, I really wanted to think about components, modularity, and core engineering principles.</p>
+        </section>
+
+        <section id="the-techs">
+            <p class="narrow">This project is built in Python with a Flask backend and deployed on Heroku. The database is Heroku's version of PostgreSql. The frontend is built in Node/Express and features a ReactJS UI.</p>
+            <p class="narrow">In addition to handling the database, the backend handles api calls to third party sources, protecting its API keys, processing search results, provides json data, and serves up a static landing page.</p>
+
+            <p class="narrow">I'd love to spend more time on the data delivery system and especially looking at the most efficient methods for handling the apps data needs.</p>
+
+            <p class="narrow">The current system arose because it was the cleanest system I found at the time to make sure every possibility of incomplete data was tested, addressed, and remedied if need be. It was efficient for building up the database. But it is too slow in practice and causes a great overuse of resources.</p> 
+
+
+            <p class="narrow">Having seen a system operate with more complexity than on previous projects, I am more than ever aware of the value of unit testing and how the confidence in building up an app in discrete testable chunks could be incredibly beneficial.</p>
+        </section>
+        
         <div class="button-grp">
-            <a class="button" href="https://six-degrees-flask-react.herokuapp.com/">Play The Game</a>
-            <a class="button" href="https://six-degrees-flask-react.github.com/">React Frontend GitHub</a>
-            <a class="button" href="https://six-degrees-flask.github.com/">Flask Backend GitHub</a>
+            <a class="button" href="https://six-degrees-flask-react.herokuapp.com/" target="_blank">Play Game</a>
+            <a class="button" href="https://github.com/montblake/six-degrees-react">React Frontend GitHub</a>
+            <a class="button" href="https://github.com/montblake/six-degrees-flask">Flask Backend GitHub</a>
         </div>
         
     </main>
 
-    <footer>
-        <div class="credits">
-            <hgroup>
-                <h3>Blake Montgomery</h3>
-                <h5>Software Engineer</h5>
-            </hgroup>
-            
-            <p>Recent bootcamp graduate. Proud to have gotten my start coding  with the Stanford/Code in Place educational  experiment. Also proud to have worked as a volunteer Section Leader for Code in Place 2021. Previously, theater director.</p>  
+    <footer id="footer" class="structure-div">
+        <div class="credits">      
+            <p>made with </p>
+            <i class="fas fa-heart"></i>
+            <p>and</p>
+            <i class="fas fa-brain"></i>
+            <p> by blake montgomery</p>
         </div>
-        
         <div class="links">
-            <i class="fab fa-linkedin-in"></i>
-            <i class="fab fa-github"></i>
-            <i class="fas fa-envelope"></i>                
-        </div>
-         
+            <a href="https://www.linkedin.com/in/blake-montgomery312/" target="_blank" ><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://github.com/montblake" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="mailto:blakemontgomery312@gmail.com"><i class="fas fa-envelope"></i></a>              
+        </div>            
     </footer>
 </body>
 
