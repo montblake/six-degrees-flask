@@ -42,12 +42,24 @@ Frontend:
 1. cd into the directory
 1. yarn install
 1. yarn start gets front-end running at localhost:3000
+1. in the src/app.js file you can switch URL from remote backend to a local server running on your machine.
 
 Note: API data (through the backend) can be overtaxed. If you're playing around, the random search button will always pull from the database so is preferable. Also, if just doing design or development adjustments, calling on actors you know are in the db will save the expense of gratuitous calls. 
 
 Backend:
+<be>
+1. clone the repository on to your local machine
+1. cd into directory
+1. python3 -m venv venv
+1. source venv/bin/activate 
 <br>
-details on installing a local version of the Python backend forthcoming...
+(on windows machine: venv\Scripts\activate)
+1. pip install -r requirements.txt
+1.  flask run <br>
+(starts dev server at localhost:5000)<br>
+(landingpage for the app at /landing)
+
+
 
 <br>
 
@@ -56,7 +68,7 @@ details on installing a local version of the Python backend forthcoming...
 
 ## Credits
 
-The **Six Degrees App** is developed by Blake Montgomery, a Chicago-based engineer. Blake recently finished _General Assembly's_ Software Engineering Intersive in August 2021. He got his start coding with Stanford's pandemic-inspired "Code in Place" and was proud to contribute to "Code in Place 2021" as a volunteer Section Leader. In a previous career, Blake was a theater artist and director specializing in original, ensemble-created productions. He is currently solidifying his knowledge with projects and continuing to deepen his understanding of CS fundamentals while seeking the ellusive Junior Developer job. You can reach him at blakemontgomery312@gmail.com.
+The **Six Degrees App** is developed by Blake Montgomery, a Chicago-based engineer. Blake recently finished _General Assembly's_ Software Engineering Intersive in August 2021. He got his start coding with Stanford's pandemic-inspired "Code in Place" and was proud to contribute to "Code in Place 2021" as a volunteer Section Leader. In a previous career, Blake was a theater artist and director specializing in original, ensemble-created productions. He is currently solidifying his knowledge with projects and continuing to deepen his understanding of CS fundamentals while seeking the elusive Junior Developer job. You can reach him at blakemontgomery312@gmail.com.
 
 <br>
 
