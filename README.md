@@ -1,4 +1,8 @@
-# Six Degrees of Kevin Bacon
+
+
+---
+# SIX DEGREES, an application
+
 ## History
 While using Wikipedia as your main cited source is academically frowned upon, in this case the internet's "free encyclopedia" provides as good a description of the inspiration of this app as any I could provide:
 
@@ -6,58 +10,75 @@ While using Wikipedia as your main cited source is academically frowned upon, in
 
 <br>
 
-## The App
-The application I've created begins with a user entering the name of an actor into a text field and submitting it to the browser via pressing "return" or clicking a submit button. The app uses this entry as a general search term to submit to the **IMDB** through an api in order to get that database's official ID number for that actor. That ID is used to execute a second search which returns name, image, and filmography info which the app then stores in memory.
+## Core Functionality
+This app was originally built as a project exploring the use of third-party API data to create content for a dynamic website. This current iteration involved a lot of technical developments but most imortantly it was a chance to go back and "gamify" the presentation of the data.
 
-The user is presented with the name and image of an actor and is asked to confirm whether this is their desired starting point. If not, the initial search field is presented again. If this is the desired starting point, upon clicking the confirm button, the app uses an algorythm to process the full list of movie titles down to major motion picture releases only. (With a major star this generally is reducing an array of 500 titles to something in the range of 40 - 50 titles.) The app then uses each of these titles as the parameter for a new search connecting to the **OMDB** which it uses to return and store cast information for each film. 
+The process can either be started by entering in an actor's name manually or letting the app choose an actor at random. The first stage of information comes from the IMDB and is completed in two successive calls. The first uses the actor's name as a general search term and from the response the app extracts the IMDB actor id. This id allows a targeted search for the actor which includes a full filmography. The film history for a popular actor can often return many hundreds of items, most of which are not exactly what we need. The app uses an algorithm to filter down the filmography into a list of "legit" movies.
 
-The cast information for the actor's filmography is used to select one new actor... and the process repeats itself.
-The user has six tries to successfully connect their starting point to Kevin Bacon. There is a reset button which can be used at any point to start a new game.
+To achieve the functionality we need, the app must also provide a cast list for each movie. It is these cast lists that provide the links to actors propeling the game forward. This requires an additional call for data for each film in the filmography of an actor. For George Clooney or Julia Roberts you might need to make 40 or 50 calls for movie cast data. Our IMDB connection is limited to 4 calls/second which makes this process impossible using their public api. Instead we switch to the OMDB to query individual movies.
 
 <br>
+
 
 ## Technologies Used
-The app is made with HTML, CSS, JavaScript, and jQuery.
+JavaScript, Node, React <br>
+Python, Flask <br>
+HTML, CSS <br>
+deployed on Heroku with PostgreSql database
 
 <br>
 
-## Getting Started
-As an web-based app, the interface should be straight-forward enough to use without any special instructions. However, it is perhaps not clear enough that the filmography section when it arrives can be scrolled horizontally.There have also been some issues with funcitonality of onscreen error messages; for the time being, you will find errors on the console. 
-
-Project deployed: 05/28/21
-
-[Six Degrees... can be found on GitHub pages](https://montblake.github.io/degrees-bacon/)
+---
+# USING THE APP
+## VISIT THE LIVE DEPLOYMENT:
+## [Play Six Degrees!](https://six-degrees-flask.herokuapp.com/landing)
 
 <br>
+
+## INSTALL THE APP LOCALLY
+Frontend:
+<br>
+1. clone the repository onto your local machine
+1. cd into the directory
+1. yarn install
+1. yarn start gets front-end running at localhost:3000
+
+Note: API data (through the backend) can be overtaxed. If you're playing around, the random search button will always pull from the database so is preferable. Also, if just doing design or development adjustments, calling on actors you know are in the db will save the expense of gratuitous calls. 
+
+Backend:
+<br>
+details on installing a local version of the Python backend forthcoming...
+
+<br>
+
+---
+# ADDITIONAL DETAILS
+
+## Credits
+
+The **Six Degrees App** is developed by Blake Montgomery, a Chicago-based engineer. Blake recently finished _General Assembly's_ Software Engineering Intersive in August 2021. He got his start coding with Stanford's pandemic-inspired "Code in Place" and was proud to contribute to "Code in Place 2021" as a volunteer Section Leader. In a previous career, Blake was a theater artist and director specializing in original, ensemble-created productions. He is currently solidifying his knowledge with projects and continuing to deepen his understanding of CS fundamentals while seeking the ellusive Junior Developer job. You can reach him at blakemontgomery312@gmail.com.
+
+<br>
+
+## Current Iteration: September 1, 2021
+Beyond redesigning the user interface to amplify the "game" aspects of the app, the current iteration involved addressing some technical concerns. I had previously created a backend version of the app in order to store and protect the API keys used for data gathering. This was built in Python using the Flask micro-framework and served up a static html framework, populated by api data rendered using jQuery.
+
+<br>
+Technical Goals:<br>
+
+    1) Build a separate front end allowing the presentation aspects to be separate from data and processing.
+    
+    2) Integrate a database into the backend to store actor/film data as it is received and to supply the data in a fashion that eliminates unnecessary API calls.
+
+
+<br>
+
 
 ## Future Enhancements
-Currently, the application's code is built to allow for the consumption of the necessary APIs and the use of jQuery to render data to the DOM for the main functions: actor ID search, full actor info and filmography search, and to obtain the cast lists of an actor's entire career of films. We switch to the OMDB from the IMDB for the final step due to current financial considerations. Eventually the app could invest in greater IMDB access to allow for full cast lists for each movie instead of just the four featured performers from each film.
+All about the data! <br>
+Separate the actor call and the movie calls. The separation of showing cast lists of movies from the existence of the movie card has already been achieved in the frontend; it still needs to be decoupled on the backend and a separate call from client to server put back into the code. This will slow down the rate at which movie calls are made. It also changes the game and makes the filmography browsing more of a game since cast lists are not automatically displayed.
 
-More important in the short term is making sure that the actor selection and information delivery process can be looped the required number of times and that winning/losing game logic can be applied. Until that functionality is achieved, the app functions more as a way to explore a specific actors filmography than as a means to reach Kevin Bacon.
+The database is also building over time its actor-film table so the app can integrate that into the "featured cast" that we download from OMDB. Over time this should give us much deeper cast information beyond the three of four listed stars.
 
-Thinking more about the gamification of the app,  I believe the design needs to shift the focus more onto the numbers: how many attemtps remain to connect to Kevin Bacon?! Also, perhaps you could choose to either begin by entering an actor (as is currently the case) or the computer could randomly choose an actor from the IMDB and present the user with a challenge. It might be fun to allow the user to change the end goal actor. So we could instead play Six Degrees of Cate Blanchett or Six Degrees of Idris Elba.
+Further improvements to the game aspect can be expected as well as more technical work clarifying the codebase.
 
-<br>
-
-## Wire-Frames and Visual Development
-Here are a visual reference and a collection of wire-frame illustrations of the app to give a sense of what it looks like and how it will function. 
-
-![wireframe collection](readme-resources/degrees-wireframe-collection.png)
-
-![visual reference 2](readme-resources/six-degrees-welcome.png)
-
-![reference responsive](readme-resources/narrow-bacon.png)
-
-![wireframe #1](readme-resources/degrees-wireframe1.png)
-
-![wireframe #2](readme-resources/degrees-wireframe2.png)
-
-![wireframe #3](readme-resources/degrees-wireframe3.png)
-
-![wireframe #4](readme-resources/degrees-wireframe4.png)
-
-![wireframe #7](readme-resources/degrees-wireframe7.png)
-
-![wireframe #9](readme-resources/degrees-wireframe9.png)
-
-![iPhone responsive](readme-resources/skinny-bacon.png)
