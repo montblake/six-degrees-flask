@@ -55,9 +55,15 @@ Backend:
 <br>
 (on windows machine: venv\Scripts\activate)
 1. pip install -r requirements.txt
+1. create .env file and place in root of app <br>
+this file needs two variables:<br>
+IMDB_KEY=<whatever_your_IMDB_key_is><br>
+OMDB_KEY=<whatever_your_OMDB_key_is>
 1.  flask run <br>
 (starts dev server at localhost:5000)<br>
 (landingpage for the app at /landing)
+
+NOTE: the start game with RANDOM CHOICE will not work at first as it only picks from actors already in the database and the local SQLite db will be empty. Wait times for returned actor information will be high as all actors must do a complete search and build filmography before display. This a good pattern if we are just building the database but a poor choice for playing. Currently, this feature is slated for redevelopment.
 
 
 
