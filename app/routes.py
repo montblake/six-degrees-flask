@@ -106,12 +106,12 @@ def update_actor_object(actor):
         print('all films NEEDED')
     else:
         print('len(films). check.')
-    for film in actor.films:
-        if not film.featured_cast:
-            films_needed = True
-            print('featured cast NEEDED')
-        else:
-            print('featured casts. check')
+    # for film in actor.films:
+    #     if not film.featured_cast:
+    #         films_needed = True
+    #         print('featured cast NEEDED')
+    #     else:
+    #         print('featured casts. check')
 
     # Update the simple things if needed
     if films_needed or image_needed or name_needed:
@@ -154,12 +154,13 @@ def process_all_films(films, actor):
 
                 
 def update_film_object(film, actor):
-    print('Updating Film OBJECT')
-    if not film.featured_cast:
-        featured_cast = get_featured_cast(film.id)
-        film.featured_cast = featured_cast
-        db.session.commit()
-        print('add feature cast')
+    # print('Updating Film OBJECT')
+    # if not film.featured_cast:
+    #     featured_cast = get_featured_cast(film.id)
+    #     film.featured_cast = featured_cast
+    #     db.session.commit()
+    #     print('add feature cast')
+
     # if current actor object isn't on cast list, ADD current actor object to cast list and commit object to db????
     if actor not in film.cast:
         film.cast.append(actor)
@@ -175,10 +176,9 @@ def make_film_object(film):
     if query_film is not None:
         return query_film
     else:
+        film_obj = Film(title=film['title'], id=film['id'].split('/')[2], year=film['year'])
         if 'image' in film:
-            film_obj = Film(title=film['title'], id=film['id'].split('/')[2], year=film['year'], image_url=film['image']['url'])
-        else: 
-            film_obj = Film(title=film['title'], id=film['id'].split('/')[2], year=film['year'])
+            film_obj['image_url'] = film['image']['url']
         db.session.add(film_obj)
         db.session.commit()
         new_film = Film.query.filter_by(id=film['id'].split('/')[2]).first()
@@ -202,10 +202,11 @@ def actor_object_into_dict(actor):
 
     legit_films = actor.films
     for film in legit_films:
+        film_obj = {'title': film.title, 'id': film.id, 'year': film.year}
         if film.image_url:
-            film_obj = {'title': film.title, 'id': film.id, 'year': film.year, 'image_url': film.image_url, 'featured_cast': film.featured_cast}
-        else: 
-            film_obj = {'title': film.title, 'id': film.id, 'year': film.year, 'featured_cast': film.featured_cast}
+            film_obj['image_url'] = film.image_url
+        if film.featured_cast:
+            film_obj['featured_cast'] = film.featured_cast
         actor_info['filmography'].append(film_obj)
     # FUNCTION TURNS ACTOR object into python dictionary 
     # which when returned to frontend automatically becomes json
@@ -301,8 +302,10 @@ def narrow_films(films_all):
 def build_filmography(films_cut):
     filmography = []
     for film in films_cut:
-        film_slim = {"title": film["title"], "year": film["year"], "id": film["id"], "featured_cast": film["featured_cast"]}
+        film_slim = {"title": film["title"], "year": film["year"], "id": film["id"]}
         if "image" in film:
             film_slim["image_url"] = film["image"]["url"]
+        if "featured_cast" in film:
+            film_slim["featured_cast"] = film["featured_cast"]
         filmography.append(film_slim)
     return filmography
