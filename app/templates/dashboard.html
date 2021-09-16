@@ -16,8 +16,10 @@
         <h3>{{ alph_list[i] }}</h3>
         <ul>
             {% for actor in actors: %}
+            {% if actor.name: %}
             {% if actor.name.split(' ')[1][0] == alph_list[i]: %}
             <li>{{ actor.name }}</li>
+            {% endif %}
             {%  endif %}
             {% endfor %}
         </ul>
