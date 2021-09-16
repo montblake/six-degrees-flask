@@ -19,11 +19,12 @@ def index():
 
 @app.route('/dashboard')
 def dashboard():
-    actors = Actor.query.all()
+    actors = Actor.query.order_by(Actor.name).all()
     num_actors = len(actors)
-    films = Film.query.all()
+    films = Film.query.order_by(Film.title).all()
     num_films = len(films)
-    return render_template('dashboard.html', actors = actors, films = films, num_actors = num_actors, num_films = num_films)
+    alph_list = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    return render_template('dashboard.html', actors = actors, films = films, num_actors = num_actors, num_films = num_films, alph_list = alph_list)
 
 
 @app.route('/getrandomactor')

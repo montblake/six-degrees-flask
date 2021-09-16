@@ -12,22 +12,34 @@
         <h2>Actors</h2>
         <p>How many actors are there in the DB?</p>
         <p>{{ num_actors }}</p>
+        {% for i in range(26): %}
+        <h3>{{ alph_list[i] }}</h3>
         <ul>
             {% for actor in actors: %}
+            {% if actor.name.split(' ')[1][0] == alph_list[i]: %}
             <li>{{ actor.name }}</li>
+            {%  endif %}
             {% endfor %}
         </ul>
+        {% endfor %}
 
     </div>
     <div id='films'>
         <h2>Films</h2>
+        
         <p>How many films are there in the DB?</p>
         <p>{{ num_films }}</p>
+        {% for i in range(26): %}
+        <h3>{{ alph_list[i] }}</h3>
         <ul>
             {% for film in films: %}
+            {% if film.title[0] == alph_list[i]: %}
             <li>{{ film.title }}</li>
+            {%  endif %}
             {% endfor %}
         </ul>
+        {% endfor %}
+        
     </div>
     <div id="visitors">
         <h2>Visitor Statistics</h2>
