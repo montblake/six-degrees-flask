@@ -17,6 +17,14 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/dashboard')
+def dashboard():
+    actors = Actor.query.all()
+    num_actors = len(actors)
+    films = Film.query.all()
+    num_films = len(films)
+    return render_template('dashboard.html', actors = actors, films = films, num_actors = num_actors, num_films = num_films)
+
 @app.route('/getrandomactor')
 def get_random_actor():
     print("Get random!")
@@ -50,8 +58,14 @@ def get_actor(actor_name):
     print('actor object into dictionary')
     return actor_info
     
+@app.route('/getcast/<film_id>')
+def get_cast(film_id):
+    print("Get Cast request received, film_id:", film_id)
+    featured_cast = get_featured_cast(film_id)
+    print("Returning Featured Cast:", featured_cast)
+    return {"featured_cast": featured_cast}
 
-
+ 
 ######################################################
 ### SUPPORTING FUNCTIONS FOR ACTOR
 ######################################################
@@ -176,9 +190,10 @@ def make_film_object(film):
     if query_film is not None:
         return query_film
     else:
-        film_obj = Film(title=film['title'], id=film['id'].split('/')[2], year=film['year'])
         if 'image' in film:
-            film_obj['image_url'] = film['image']['url']
+            film_obj = Film(title=film['title'], id=film['id'].split('/')[2], year=film['year'], image_url=film['image']['url'])
+        else:
+            film_obj = Film(title=film['title'], id=film['id'].split('/')[2], year=film['year'])
         db.session.add(film_obj)
         db.session.commit()
         new_film = Film.query.filter_by(id=film['id'].split('/')[2]).first()
@@ -263,12 +278,20 @@ def search_imdb_with_id(actor_id):
 #  OMDB SEARCH for FILM CASTS
 ########################################################################################
 def get_featured_cast(movie_id):
+    print("Getting featured cast")
     api_url = "https://www.omdbapi.com/?apikey=" + OMDB_KEY + "&i=" + movie_id
     response = requests.get(api_url)
     response = response.json()
-    print(response)
+    print(response["Actors"])
     featured_cast = response["Actors"]
+    #  get film object from DB
+    film = Film.query.filter_by(id=movie_id).first()
+    film.featured_cast = featured_cast
+    # film SHOULD already be in db.session so commit should set this in stone
+    db.session.commit()
+    print(featured_cast)
     return featured_cast
+
 
 
 ########################################################################################

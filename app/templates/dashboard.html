@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Hello, Blake</h1>
+    <div id='actors'>
+        <h2>Actors</h2>
+        <p>How many actors are there in the DB?</p>
+        <p>{{ num_actors }}</p>
+        <ul>
+            {% for actor in actors: %}
+            <li>{{ actor.name }}</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+    <div id='films'>
+        <h2>Films</h2>
+        <p>How many films are there in the DB?</p>
+        <p>{{ num_films }}</p>
+        <ul>
+            {% for film in films: %}
+            <li>{{ film.title }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="visitors">
+        <h2>Visitor Statistics</h2>
+    </div>
+    <div id="log_information">
+        <h2>Log Files</h2>
+    </div>
+    <div id="api vs db usage">
+        <h2>API vs DB usage</h2>
+        <h3>Over Last 24 hours</h3>
+        <h3>Over Last week</h3>
+        <h3>Over Last month</h3>
+    </div>
+    <div id="mode">
+        <h2>Operation Mode</h2>
+        <h3>Build DB</h3>
+        <h3>Efficient Delivery</h3>
+    </div>
+</html>
