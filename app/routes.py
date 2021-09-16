@@ -25,6 +25,7 @@ def dashboard():
     num_films = len(films)
     return render_template('dashboard.html', actors = actors, films = films, num_actors = num_actors, num_films = num_films)
 
+
 @app.route('/getrandomactor')
 def get_random_actor():
     print("Get random!")
@@ -58,14 +59,8 @@ def get_actor(actor_name):
     print('actor object into dictionary')
     return actor_info
     
-@app.route('/getcast/<film_id>')
-def get_cast(film_id):
-    print("Get Cast request received, film_id:", film_id)
-    featured_cast = get_featured_cast(film_id)
-    print("Returning Featured Cast:", featured_cast)
-    return {"featured_cast": featured_cast}
 
- 
+
 ######################################################
 ### SUPPORTING FUNCTIONS FOR ACTOR
 ######################################################
@@ -120,12 +115,12 @@ def update_actor_object(actor):
         print('all films NEEDED')
     else:
         print('len(films). check.')
-    # for film in actor.films:
-    #     if not film.featured_cast:
-    #         films_needed = True
-    #         print('featured cast NEEDED')
-    #     else:
-    #         print('featured casts. check')
+    for film in actor.films:
+        if not film.featured_cast:
+            films_needed = True
+            print('featured cast NEEDED')
+        else:
+            print('featured casts. check')
 
     # Update the simple things if needed
     if films_needed or image_needed or name_needed:
@@ -168,13 +163,12 @@ def process_all_films(films, actor):
 
                 
 def update_film_object(film, actor):
-    # print('Updating Film OBJECT')
-    # if not film.featured_cast:
-    #     featured_cast = get_featured_cast(film.id)
-    #     film.featured_cast = featured_cast
-    #     db.session.commit()
-    #     print('add feature cast')
-
+    print('Updating Film OBJECT')
+    if not film.featured_cast:
+        featured_cast = get_featured_cast(film.id)
+        film.featured_cast = featured_cast
+        db.session.commit()
+        print('add feature cast')
     # if current actor object isn't on cast list, ADD current actor object to cast list and commit object to db????
     if actor not in film.cast:
         film.cast.append(actor)
@@ -192,7 +186,7 @@ def make_film_object(film):
     else:
         if 'image' in film:
             film_obj = Film(title=film['title'], id=film['id'].split('/')[2], year=film['year'], image_url=film['image']['url'])
-        else:
+        else: 
             film_obj = Film(title=film['title'], id=film['id'].split('/')[2], year=film['year'])
         db.session.add(film_obj)
         db.session.commit()
@@ -217,11 +211,10 @@ def actor_object_into_dict(actor):
 
     legit_films = actor.films
     for film in legit_films:
-        film_obj = {'title': film.title, 'id': film.id, 'year': film.year}
         if film.image_url:
-            film_obj['image_url'] = film.image_url
-        if film.featured_cast:
-            film_obj['featured_cast'] = film.featured_cast
+            film_obj = {'title': film.title, 'id': film.id, 'year': film.year, 'image_url': film.image_url, 'featured_cast': film.featured_cast}
+        else: 
+            film_obj = {'title': film.title, 'id': film.id, 'year': film.year, 'featured_cast': film.featured_cast}
         actor_info['filmography'].append(film_obj)
     # FUNCTION TURNS ACTOR object into python dictionary 
     # which when returned to frontend automatically becomes json
@@ -278,20 +271,12 @@ def search_imdb_with_id(actor_id):
 #  OMDB SEARCH for FILM CASTS
 ########################################################################################
 def get_featured_cast(movie_id):
-    print("Getting featured cast")
     api_url = "https://www.omdbapi.com/?apikey=" + OMDB_KEY + "&i=" + movie_id
     response = requests.get(api_url)
     response = response.json()
-    print(response["Actors"])
+    print(response)
     featured_cast = response["Actors"]
-    #  get film object from DB
-    film = Film.query.filter_by(id=movie_id).first()
-    film.featured_cast = featured_cast
-    # film SHOULD already be in db.session so commit should set this in stone
-    db.session.commit()
-    print(featured_cast)
     return featured_cast
-
 
 
 ########################################################################################
@@ -325,10 +310,8 @@ def narrow_films(films_all):
 def build_filmography(films_cut):
     filmography = []
     for film in films_cut:
-        film_slim = {"title": film["title"], "year": film["year"], "id": film["id"]}
+        film_slim = {"title": film["title"], "year": film["year"], "id": film["id"], "featured_cast": film["featured_cast"]}
         if "image" in film:
             film_slim["image_url"] = film["image"]["url"]
-        if "featured_cast" in film:
-            film_slim["featured_cast"] = film["featured_cast"]
         filmography.append(film_slim)
     return filmography
