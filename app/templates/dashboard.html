@@ -4,60 +4,72 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
     <title>Dashboard</title>
 </head>
 <body>
-    <h1>Hello, Blake</h1>
-    <div id='actors'>
-        <h2>Actors</h2>
-        <p>How many actors are there in the DB?</p>
-        <p>{{ num_actors }}</p>
-        {% for i in range(26): %}
-        <h3>{{ alph_list[i] }}</h3>
-        <ul>
-            {% for actor in actors: %}
-            {% if actor.name: %}
-            {% if actor.name.split(' ')[1][0] == alph_list[i]: %}
-            <li>{{ actor.name }}</li>
-            {% endif %}
-            {%  endif %}
-            {% endfor %}
-        </ul>
-        {% endfor %}
+    <header>
+        <h1>Hello, Blake</h1>
+        <h2>Currently in Database: {{ num_actors }}  Actors, {{ num_films }} Films</h2>
+    </header>
 
+    
+    <div id='actors'>
+        <h2>Actors</h2> 
+        <div class='actors-in-db'>     
+            {% for i in range(26): %}   
+            <div class="single-actor">
+                <h3>{{ alph_list[i] }}</h3>
+                <ul>
+                    {% for actor in actors: %}
+                    {% if actor.name: %}
+                    {% if actor.name.split(' ')[1][0] == alph_list[i]: %}
+                    <li>{{ actor.name }}</li>
+                    {% endif %}
+                    {%  endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
     </div>
+
     <div id='films'>
         <h2>Films</h2>
-        
-        <p>How many films are there in the DB?</p>
-        <p>{{ num_films }}</p>
-        {% for i in range(26): %}
-        <h3>{{ alph_list[i] }}</h3>
-        <ul>
-            {% for film in films: %}
-            {% if film.title[0] == alph_list[i]: %}
-            <li>{{ film.title }}</li>
-            {%  endif %}
+        <div class="films-in-db">
+            {% for i in range(26): %}
+            <div class="single-film">
+                <h3>{{ alph_list[i] }}</h3>
+                <ul>
+                    {% for film in films: %}
+                    {% if film.title[0] == alph_list[i]: %}
+                    <li>{{ film.title }}</li>
+                    {%  endif %}
+                    {% endfor %}
+                </ul>
+            </div>
             {% endfor %}
-        </ul>
-        {% endfor %}
-        
+        </div>
     </div>
-    <div id="visitors">
-        <h2>Visitor Statistics</h2>
-    </div>
-    <div id="log_information">
-        <h2>Log Files</h2>
-    </div>
-    <div id="api vs db usage">
-        <h2>API vs DB usage</h2>
-        <h3>Over Last 24 hours</h3>
-        <h3>Over Last week</h3>
-        <h3>Over Last month</h3>
-    </div>
-    <div id="mode">
-        <h2>Operation Mode</h2>
-        <h3>Build DB</h3>
-        <h3>Efficient Delivery</h3>
-    </div>
+
+    <section>
+        <div id="visitors">
+            <h2>Visitor Statistics</h2>
+        </div>
+        <div id="log_information">
+            <h2>Log Files</h2>
+        </div>
+        <div id="api vs db usage">
+            <h2>API vs DB usage</h2>
+            <h3>Over Last 24 hours</h3>
+            <h3>Over Last week</h3>
+            <h3>Over Last month</h3>
+        </div>
+        <div id="mode">
+            <h2>Operation Mode</h2>
+            <h3>Build DB</h3>
+            <h3>Efficient Delivery</h3>
+        </div>
+    </section>
+    
 </html>

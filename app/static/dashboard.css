@@ -1,0 +1,50 @@
+* {
+    margin: 0;
+    padding:  0;
+    list-style: none;
+}
+
+body {
+    background:#6b0196;
+    color: whitesmoke;
+}
+
+header {
+    width: 100%;
+    height: 200px;
+    background: black;
+}
+
+#actors, #films {
+    background: orchid;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.actors-in-db {
+    background: orangered;
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+}
+
+.single-actor ul {
+    display: none;
+
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+    opacity: 50%;
+}
+
+.films-in-db {
+    background: orangered;
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+}
+
+.single-film ul {
+    display: none;
+}
