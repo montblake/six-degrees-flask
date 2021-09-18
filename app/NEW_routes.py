@@ -1,6 +1,6 @@
 from requests.models import Response
 from app import app, db
-from flask import render_template, has_request_context, request
+from flask import render_template
 from app.models import Actor, Film
 import requests
 import random
@@ -17,21 +17,8 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/dashboard')
-def dashboard():
-    actors = Actor.query.order_by(Actor.name).all()
-    num_actors = len(actors)
-    films = Film.query.order_by(Film.title).all()
-    num_films = len(films)
-    alph_list = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-    app.logger.info('someone visited dashboard')
-    return render_template('dashboard.html', actors = actors, films = films, num_actors = num_actors, num_films = num_films, alph_list = alph_list)
-
-
 @app.route('/getrandomactor')
 def get_random_actor():
-    app.logger.info('request to get random actor')
-    actor_info = {}
     actors = Actor.query.all()
     actor = random.choice(actors)
     updated_actor = update_actor_object(actor)
@@ -41,30 +28,26 @@ def get_random_actor():
 
 @app.route('/getactor/<actor_name>')
 def get_actor(actor_name):
-    app.logger.info('request to get actor:', actor_name, request.remote_addr)
     actor = search_db_for_actor(actor_name)
-   
     if actor is not None:
-        print(actor.name +  " is in the db")
         updated_actor = update_actor_object(actor)
-        print("updating actor object")
     else:
-       print(actor_name, " NOT in db")
        new_actor = create_new_actor(actor_name)
-       print('create new actor')
        updated_actor = update_actor_object(new_actor)
-       print('update actor object')
     actor_info = actor_object_into_dict(updated_actor)
-    print('actor object into dictionary')
     return actor_info
-    
+
+
+@app.route('/getcast/<film_id>')
+def get_cast(film_id):
+    featured_cast = get_featured_cast(film_id)
+    return {"featured_cast": featured_cast}
 
 
 ######################################################
 ### SUPPORTING FUNCTIONS FOR ACTOR
 ######################################################
 def create_new_actor(actor_name):
-    print("initiating imdb search")
     response = search_imdb_with_name(actor_name)
     
     if "d" in response:
@@ -85,43 +68,28 @@ def create_new_actor(actor_name):
         return actor_object
 
     else:
-        print('Actor not found. Response: ', response)
-        return({'Response': response})
+        handle_error(response)
 
 
 def update_actor_object(actor):
+    # if actor.id then there is no record to update
+    if not actor.id:
+        handle_error('no actor with that id')
+
     # assume nothing needs updating
     films_needed=False
     image_needed=False
     name_needed=False
-    
-    if actor.name:
-        print('name. check.')
-    else:
-        name_needed = True
-        print('no name')
-    if actor.id:
-        print('id. check.')
-    else:
-        print('no id')
-    if actor.image_url:
-        print('image. check.')
-    else:
+    # check state of record one attribute at a time
+    if not actor.name:
+       name_needed = True
+    if not actor.image_url:
         image_needed = True
-        print('no image')
-    if len(actor.films) < 5:
+    if len(actor.films) < 1:
         films_needed = True
-        print('all films NEEDED')
-    else:
-        print('len(films). check.')
-    for film in actor.films:
-        if not film.featured_cast:
-            films_needed = True
-            print('featured cast NEEDED')
-        else:
-            print('featured casts. check')
 
-    # Update the simple things if needed
+
+    # Update if needed
     if films_needed or image_needed or name_needed:
         print('addressing need')
         response = search_imdb_with_id(actor.id)
@@ -129,13 +97,15 @@ def update_actor_object(actor):
             actor.image_url = response["base"]["image"]["url"]
         if name_needed:
             actor.name = response["base"]["name"] 
+        if films_needed:
+            films = response["filmography"]
         
         # all films in this actor filmography must be checked against the database
         # if they exist, they will be updated (if necessary)
         # if they don't exist, they will be created, then updated
 
         legit_films = narrow_films(response["filmography"])
-        process_all_films(legit_films, actor)
+        process_films(legit_films, actor)
         # for all films you must make sure actor is linked to it. it will be included...
         # also film must have featured_cast
 
@@ -148,60 +118,36 @@ def update_actor_object(actor):
 ######################################################
 ### Supporting Functions for Films
 ######################################################
-def process_all_films(films, actor):
-    print('processing_all_films for', actor.name)
+def process_films(films, actor):
     for film in films:
-        print("film: ", film)
         db_film = Film.query.filter_by(id=film['id']).first()
-        print("processing film: db film")
         if db_film is None:
             new_film = make_film_object(film)
-            updated_film = update_film_object(new_film, actor)
+            new_film.cast.append(actor)
+            db.session.commit()
         else:
-            updated_film = update_film_object(db_film, actor)
-
-                
-def update_film_object(film, actor):
-    print('Updating Film OBJECT')
-    if not film.featured_cast:
-        featured_cast = get_featured_cast(film.id)
-        film.featured_cast = featured_cast
-        db.session.commit()
-        print('add feature cast')
-    # if current actor object isn't on cast list, ADD current actor object to cast list and commit object to db????
-    if actor not in film.cast:
-        film.cast.append(actor)
-        db.session.commit()
-        print('add actor to cast')
-    return film
+            if actor not in db_film.cast:
+                db_film.cast.append(actor)
+                db.session.commit()
 
 
 def make_film_object(film):
-    print('making FILM OBJECT', film)
-    # They must be turned into python dictionaries before sending
-    query_film = Film.query.filter_by(id=film['id'].split('/')[2]).first()
-    if query_film is not None:
-        return query_film
+    if 'image' in film:
+        film_obj = Film(title=film['title'], id=film['id'].split('/')[2], year=film['year'], image_url=film['image']['url'])
     else:
-        if 'image' in film:
-            film_obj = Film(title=film['title'], id=film['id'].split('/')[2], year=film['year'], image_url=film['image']['url'])
-        else: 
-            film_obj = Film(title=film['title'], id=film['id'].split('/')[2], year=film['year'])
-        db.session.add(film_obj)
-        db.session.commit()
-        new_film = Film.query.filter_by(id=film['id'].split('/')[2]).first()
-        return new_film
+        film_obj = Film(title=film['title'], id=film['id'].split('/')[2], year=film['year'])
+    db.session.add(film_obj)
+    db.session.commit()
+    new_film = Film.query.filter_by(id=film['id'].split('/')[2]).first()
+    return new_film
 
 
-    
+
 ######################################################
-### Supporting Functions for ACTOR OBJECTS
+### TRANSFORM DATA
 ######################################################
 def actor_object_into_dict(actor):
     # TAKES IN A ACTOR object (the form of the db information)
-    print(actor)
-    print(actor.name)
-    print(actor.films)
     actor_info = {}
     actor_info['name'] = actor.name
     actor_info['id'] = actor.id
@@ -210,15 +156,36 @@ def actor_object_into_dict(actor):
 
     legit_films = actor.films
     for film in legit_films:
+        film_obj = {'title': film.title, 'id': film.id, 'year': film.year}
         if film.image_url:
-            film_obj = {'title': film.title, 'id': film.id, 'year': film.year, 'image_url': film.image_url, 'featured_cast': film.featured_cast}
-        else: 
-            film_obj = {'title': film.title, 'id': film.id, 'year': film.year, 'featured_cast': film.featured_cast}
+            film_obj['image_url'] = film.image_url
+        if film.featured_cast:
+            film_obj['featured_cast'] = film.featured_cast
         actor_info['filmography'].append(film_obj)
     # FUNCTION TURNS ACTOR object into python dictionary 
     # which when returned to frontend automatically becomes json
     return actor_info
     
+
+def build_filmography(films_cut):
+    filmography = []
+    for film in films_cut:
+        film_slim = {"title": film["title"], "year": film["year"], "id": film["id"]}
+        if "image" in film:
+            film_slim["image_url"] = film["image"]["url"]
+        if "featured_cast" in film:
+            film_slim["featured_cast"] = film["featured_cast"]
+        filmography.append(film_slim)
+    return filmography
+
+
+
+
+
+######################################################
+### PROCESS DATA
+######################################################
+
 
 
 ##########################################################################
@@ -244,9 +211,10 @@ def prep_name_for_search(actor_name):
 
 
 
-##########################################################################
-# IMDB SEARCHES
-##########################################################################
+
+######################################################
+### IMDB SEARCHES  -- ACTOR
+######################################################
 def search_imdb_with_name(actor_name):
     # search takes in a name and from the response we extract actor_id
     imdb_url = "https://imdb8.p.rapidapi.com/auto-complete?q="
@@ -265,15 +233,17 @@ def search_imdb_with_id(actor_id):
     return response
 
 
-
-########################################################################################
-#  OMDB SEARCH for FILM CASTS
-########################################################################################
+######################################################
+### OMDB SEARCH -- FILM
+######################################################
+'''
+takes in a string containing an IMDB film id
+returns a string with the top three or four billed actors
+'''
 def get_featured_cast(movie_id):
     api_url = "https://www.omdbapi.com/?apikey=" + OMDB_KEY + "&i=" + movie_id
     response = requests.get(api_url)
     response = response.json()
-    print(response)
     featured_cast = response["Actors"]
     return featured_cast
 
@@ -305,12 +275,11 @@ def narrow_films(films_all):
         if "billing" in film:
             films_cut4.append(film)
     return films_cut4
-    
-def build_filmography(films_cut):
-    filmography = []
-    for film in films_cut:
-        film_slim = {"title": film["title"], "year": film["year"], "id": film["id"], "featured_cast": film["featured_cast"]}
-        if "image" in film:
-            film_slim["image_url"] = film["image"]["url"]
-        filmography.append(film_slim)
-    return filmography
+
+
+######################################################
+### ERROR HANDLING
+######################################################
+def handle_error(error):
+    print(error)
+    return {'there was an error': error}
